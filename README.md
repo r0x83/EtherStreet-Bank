@@ -1,0 +1,1 @@
+A borrowing dapp that let's a user submit Ether to a smart contract as collateral and receive stablecoin as a loan.
