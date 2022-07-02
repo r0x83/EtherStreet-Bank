@@ -5,17 +5,15 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract StableCoin is ERC20, Ownable {
-    constructor() ERC20("Stable Coin","STBLE") {
+    constructor() ERC20("StableCoin","STBLE") {
     }
 
-    function mint(address account, uint256 amount) onlyOwner external  returns(bool){
+    function mint(address account, uint256 amount) onlyOwner external {
         _mint(account, amount);
-        return true;
     }
 
-    function burn(address account, uint256 amount) onlyOwner external returns(bool){
+    function burn(address account, uint256 amount) onlyOwner external {
         _burn(account, amount);
-        return true;
     }
     
 }
