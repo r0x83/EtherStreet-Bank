@@ -1,4 +1,4 @@
-const { ethers } = require("ethers");
+// const { ethers } = require("ethers");
 
 async function main() {
   
@@ -10,7 +10,7 @@ async function main() {
     const EtherVault = await ethers.getContractFactory("EtherVault");
     const etherVault = await EtherVault.deploy(stableCoin.address);
     console.log("Vault smart contract deployed to address:", etherVault.address);
-    
+
  }
  
  main()
