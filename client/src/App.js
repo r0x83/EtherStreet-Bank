@@ -2,34 +2,20 @@ import './App.css';
 import {ethers} from 'ethers';
 import {useEffect, useState} from 'react';
 
-import VaultArtifact from './EtherVault.json';
-import TokenArtifact from './StableCoin.json';
-import { Signer } from 'ethers';
+import Vault from './EtherVault.json';
+import Token from './StableCoin.json';
 
+const vaultAddress = "0x0b82fA709CC4c4e026e4F05eE4D13Fa9C11cfd33"; //address of the deployed vault
 
 function App() {
+
   const [provider, setProvider] = useState(undefined);
-  // const [signer, setSigner] = useState(undefined);
   const [accounts, setAccounts] = useState([]);
+  const [balance, setBalance] = useState(0);
 
-  // const [signerAddress, setSignerAddress] = useState(undefined);
   const [vaultContract, setVaultContract] = useState(undefined);
+  const [tokenContract, setTokenContract] = useState(undefined);
 
-  const toBytes32 = text => ( ethers.utils.formatBytes32String(text));
-  // const toString = bytes32 => (ethers.utils.parseBytes32String(bytes32));
-  // const toWei = ether => (ethers.utils.parseEther(ether));
-  const toEther = wei => (ethers.utils.formatEther(wei).toString());
-  // const toRound = num => (Number(num).toFixed(2));
-
-  useEffect(()=> {
-    const init = async () => {
-      const provider = await new ethers.providers.Web3Provider(window.ethereum)
-      setProvider(provider)
-
-      const vaultContract = await new ethers.Contract(0x0b82fA709CC4c4e026e4F05eE4D13Fa9C11cfd33,VaultArtifact.abi)
-      setVaultContract(vaultContract)
-    }
-  })
 
   const isConnected = () => Boolean(accounts[0]);
 
@@ -39,12 +25,20 @@ function App() {
         method: "eth_requestAccounts",
       });
       setAccounts(accounts);
+      initialize();
     }
   }
 
-  const getTokenBalance = async () =>{
-    const balance = await vaultContract.connect(accounts[0]).getBalance( toBytes32(accounts[0]))
-    return toEther(balance)
+  async function initialize() {
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner(); //to sign the transaction
+      const contract = new ethers.Contract(
+        vaultAddress,
+        Vault.abi,
+        signer
+      );
+    }  
   }
 
   return (
@@ -55,20 +49,13 @@ function App() {
             <p>
               Welcome {accounts[0]?.substring(0,10)}...
             </p>
-            <div>
-              <div className="token balance">
-                <p>
-                  Token Balance = {getTokenBalance}
-                </p>
-              </div>
-            </div>
           </div>
         ) : (
           <div>
           <p>
             You are not connected
           </p>
-          <button onClick={connectAccount} className="btn btn-primary">Connssect Metamask</button>
+          <button onClick={connectAccount} className="btn btn-primary">Connect Metamask</button>
         </div>
         )} 
       </header>
