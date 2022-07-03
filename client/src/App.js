@@ -2,16 +2,15 @@ import './App.css';
 import {ethers} from 'ethers';
 import {useState} from 'react';
 import Vault from './EtherVault.json';
-import Balances from '.components/Balances.js';
-import Borrow from '.components/Borrow.js';
-import Repay from '.components/Repay.js';
+import Balances from './components/Balances.js';
 
 
-const vaultAddress = "0x0b82fA709CC4c4e026e4F05eE4D13Fa9C11cfd33"; //address of the deployed vault
+const vaultAddress = "0x6067938cfaEcB52fe6E16a95148e8dfd245b28b8"; //address of the deployed vault
 
 function App() {
   // const [provider, setProvider] = useState(undefined);
   const [accounts, setAccounts] = useState([]);
+  const [signer, setSigner] = useState(undefined);
   const [vaultContract, setVaultContract] = useState(undefined);
 
 
@@ -36,6 +35,7 @@ function App() {
         Vault.abi,
         signer
       );
+      setSigner(signer);
       setVaultContract(vaultContract);
     }  
   }
@@ -49,9 +49,8 @@ function App() {
               Welcome {accounts[0]?.substring(0,10)}...
             </p>
             <div className='components'>
-              <Balances/>
-              <Borrow/>
-              <Repay/>
+              <Balances signer={signer} vaultContract={vaultContract}/>
+              
             </div>
           </div>
         ) : (

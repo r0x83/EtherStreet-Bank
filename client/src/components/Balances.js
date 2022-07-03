@@ -20,12 +20,14 @@ const Balances = ({signer,vaultContract}) => {
 
     async function getVaultBalances() {
         if(signer){
-            const [eth,token] = await vaultContract.connect(signer).getBalance();
-            setEtherDeposited((ethers.utils.formatEther(eth)).toString());
-            setTokenBorrowed((ethers.utils.formatEther(token)).toString());
+            const [eth,token] = await vaultContract.getBalance(signer.getAddress());
+            setEtherDeposited(eth/(10**18).toString());
+            setTokenBorrowed(token/(10**18).toString());
+            console.log(eth.toString())
+            console.log(token/(10**36).toString())
         
         try{
-            console.log(etherDeposited);
+            // console.log(etherDeposited);
         }catch (err) {
             console.log("error: ",err)
         }
@@ -33,14 +35,21 @@ const Balances = ({signer,vaultContract}) => {
     }
 
     const deposit = async (wei) => {
-        if(etherDeposited){
+        if(signer){
           try{
-            const txn = await vaultContract.connect(signer).depositEther({ value: ethers.utils.parseEther(wei) });
-            await txn.wait();
+            // console.log('blaaaaah')
+            console.log(wei.toString())
+            console.log({value:wei.toString()})
+            const Deposit = await vaultContract.depositEther(
+              (wei.toString()),
+              { value:wei.toString() }); //msg.value is passed as wei
+            await Deposit.wait();
+           
+            // console.log('blaaaaah')
           }
           catch(err){
-            alert('Transaction failed');
-            console.log(amount)
+            alert('Deposit failed');
+            // console.log(amount)
 
           }
         }   
@@ -48,12 +57,14 @@ const Balances = ({signer,vaultContract}) => {
     
       const withdraw = async (wei) => {
         try{
-          const txn = await vaultContract.connect(signer).withdrawEther({ value: ethers.utils.parseEther(wei) });
-          await txn.wait();
+          console.log(wei.toString())
+          console.log(amount)
+          const Withdraw = await vaultContract.connect(signer).withdrawEther(wei.toString());
+          await Withdraw.wait();
         }
         catch(err){
-          alert('Transaction failed');
-          console.log(amount)
+          alert('Withdraw failed');
+          // console.log(amount)
         }
       }  
 
@@ -74,8 +85,8 @@ const Balances = ({signer,vaultContract}) => {
 
     return (
         <>
-        <p>Vault Ether Balance: </p> {etherDeposited}
-        <p>Vault Token Balance: </p> {tokenBorrowed}
+        <p>Vault Ether Balance: </p> {etherDeposited} ether
+        <p>Vault Token Balance: </p> {tokenBorrowed} tokens
 
         <div className="d-flex gap-4 col-md-6">
                         <button onClick={ () => displayModal() } className="btn btn-primary">Deposit/Withdraw</button>
