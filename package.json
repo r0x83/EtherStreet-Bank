@@ -10,11 +10,22 @@
   "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "@openzeppelin/contracts": "^4.6.0",
     "ethers": "^5.6.9",
     "hardhat": "^2.9.9"
   },
   "dependencies": {
-    "@chainlink/contracts": "^0.4.1"
+    "@chainlink/contracts": "^0.4.1",
+    "@chakra-ui/number-input": "^2.0.2",
+    "@chakra-ui/react": "^2.2.1",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@ethersproject/bignumber": "^5.6.2",
+    "bootstrap": "^3.4.1",
+    "framer-motion": "^6.3.16",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
   }
 }
