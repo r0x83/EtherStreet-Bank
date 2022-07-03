@@ -8,7 +8,7 @@ async function main() {
 
 
     const EtherVault = await ethers.getContractFactory("EtherVault");
-    const etherVault = await EtherVault.deploy(stableCoin.address);
+    const etherVault = await EtherVault.deploy("0x0b82fA709CC4c4e026e4F05eE4D13Fa9C11cfd33");
     console.log("Vault smart contract deployed to address:", etherVault.address);
 
  }
